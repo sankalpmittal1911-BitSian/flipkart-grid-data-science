@@ -38,4 +38,4 @@ with tf.Session() as test_a:
     box_confidence = tf.random_normal([19, 19, 1, 1], mean=1, stddev=4, seed = 1)
     boxes = tf.random_normal([19, 19, 1, 4], mean=1, stddev=4, seed = 1)
     box_class_probs = tf.random_normal([19, 19, 1, 2], mean=1, stddev=4, seed = 1)
-    scores, boxes, classes = yolo_filter_boxes(box_confidence, boxes, box_class_probs, threshold = 0.5)
+    scores, boxes, classes = yolo_filter_boxes(box_confidence, boxes, box_class_probs, threshold = 0.6)
