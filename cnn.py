@@ -344,14 +344,25 @@ n_epoch = 100
       
       #print(loss)
       
+import keras.callbacks
+from keras.callbacks import ReduceLROnPlateau
+from keras.callbacks import ModelCheckpoint
  
 callbacks = [
     EarlyStopping(monitor='val_loss',patience=10, verbose=1),
     ReduceLROnPlateau(monitor='val_loss',factor=0.1, patience=3, min_lr=0.00000001, verbose=1),
-    ModelCheckpoint('/content/drive/My Drive/model_yolo.h5', monitor='loss',verbose=1, save_best_only=True, save_weights_only=False)
+    ModelCheckpoint('/content/drive/My Drive/model_yolo.h5', monitor='val_loss',verbose=1, save_best_only=True, save_weights_only=False)
 ]
  
  
-model.fit_generator(DATA_GEN(X_train_samples, y_train_samples, batch_size=12), steps_per_epoch=875 , epochs=100, verbose=1 , validation_data = DATA_GEN(X_valid_samples,y_valid_samples,batch_size=4) , validation_steps = 875 )
- 
+model.fit_generator(DATA_GEN(X_train_samples, y_train_samples, batch_size=12), steps_per_epoch=875 , epochs=100, verbose=1 , callbacks=callbacks, validation_data = DATA_GEN(X_valid_samples,y_valid_samples,batch_size=4) , validation_steps = 875 )
+
+#Evaluate on training and validation set
+
+model.evaluate_generator(DATA_GEN(X_train_samples, y_train_samples, batch_size=12))
+model.evaluate_generator(DATA_GEN(X_valid_samples,y_valid_samples,batch_size=4))
+
+#Now you can test on any image
+#model.predict_generator(test_generator)
+
 model.save('/content/drive/My Drive/flipkart data science contest/model_yolo.h5')
